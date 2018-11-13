@@ -26,7 +26,7 @@ public class Board {
 	}
 	
 	public boolean solve() {
-		return false;
+		return solve(0,0);
 	}
 	
 	private boolean solve(int i, int j) {
