@@ -4,7 +4,7 @@ public class Board {
 	
 	
 	public boolean set (int row, int col, int number) {
-		if (row < 10 && row > 0 && col < 10 && col > 0 && number < 10 && number > 0) {
+		if (row < 10 && row > 0 && col < 10 && col > 0 && number < 10 && number > 0 && board[row][col] == 0) {
 			board[row][col] = number;
 			return true;
 		}
@@ -29,7 +29,22 @@ public class Board {
 		return solve(0,0);
 	}
 	
-	private boolean solve(int i, int j) {
+	private boolean solve(int row, int col) {
+		if(row == 9) {
+			return true;
+		}
+		
+			for(int num = 1 ; num < 10 ; num++) {
+				if(set(row,col,num)) {
+				col++;
+				if(col == 9) {
+					return false;
+				} else {
+					solve(row, col+1);
+				}
+			}
+		}
+		
 		return false;
 	}
 }
