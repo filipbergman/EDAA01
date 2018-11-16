@@ -32,8 +32,7 @@ class BinarySearchTreeTest {
 		tree.add(10);
 		tree.add(2);
 		tree.add(9);
-		int t = tree.height();
-		assertTrue("Wrong height", t == 3);
+		assertTrue("Wrong height", tree.height() == 3);
 	}
 
 	@Test

@@ -4,6 +4,20 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	BinaryNode<E> root;
     int size;
     
+    public static void main(String args[]) {
+    	BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
+    	BSTVisualizer bstv = new BSTVisualizer("Träed", 500, 500);
+    	tree.add(3);
+    	tree.add(10);
+		tree.add(2);
+		tree.add(9);
+		tree.add(1);
+		tree.add(30);
+		tree.add(11);
+		tree.add(12);
+		bstv.drawTree(tree);
+    }
+    
 	/**
 	 * Constructs an empty binary searchtree.
 	 */
@@ -59,7 +73,6 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * @return the height of the tree
 	 */
 	public int height() {
-		System.out.println("hej");
 		return heightCal(root);
 	}
 	
@@ -67,7 +80,6 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 		if(binaryNode == null) {
 			return 0;
 		} else {
-			System.out.println("hej");
 			return 1 + Math.max(heightCal(binaryNode.left), heightCal(binaryNode.right));
 		}
 	}
