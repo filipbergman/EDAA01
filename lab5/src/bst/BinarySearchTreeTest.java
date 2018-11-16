@@ -1,34 +1,49 @@
 package bst;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BinarySearchTreeTest {
+	BinarySearchTree<Integer> tree;
 
 	@BeforeEach
 	void setUp() throws Exception {
+		tree = new BinarySearchTree<Integer>();
 	}
 
 	@Test
 	void testAdd() {
-		BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
-		test.add(3);
-		test.add(1);
-		test.add(2);
-		test.add(20);
-		assertTrue(test.root.equals(3));
+		tree.add(3);
+		tree.add(10);
+		tree.add(2);
+		tree.add(9);
+		assertTrue("Root element is wrong", tree.root.element.equals(3));
+		assertTrue("Root.right element is wrong", tree.root.right.element.equals(10));
+		assertTrue("Root.left element is wrong", tree.root.left.element.equals(2));
+		assertTrue("Root.right.left element is wrong", tree.root.right.left.element.equals(9));
 	}
 
 	@Test
 	void testHeight() {
-		fail("Not yet implemented");
+		tree.add(3);
+		tree.add(10);
+		tree.add(2);
+		tree.add(9);
+		int t = tree.height();
+		assertTrue("Wrong height", t == 3);
 	}
 
 	@Test
 	void testSize() {
-		fail("Not yet implemented");
+		tree.add(3);
+		tree.add(10);
+		tree.add(2);
+		tree.add(9);
+		tree.add(9);
+		assertTrue("Wrong size", tree.size == 4);
 	}
 
 }

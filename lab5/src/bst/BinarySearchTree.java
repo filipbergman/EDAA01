@@ -3,7 +3,6 @@ package bst;
 public class BinarySearchTree<E extends Comparable<? super E>> {
 	BinaryNode<E> root;
     int size;
-    int height;
     
 	/**
 	 * Constructs an empty binary searchtree.
@@ -22,17 +21,36 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	}
 	
 	private boolean addEl(E x, BinaryNode<E> binaryNode) {
-		if(binaryNode.element == null) {
-			// binarynode är null så jag måste peka mothernoden på den för att den ska bli definierad, höger eller vänster?
-			binaryNode.element = x;
+		// När man lägger till roten
+		if(binaryNode == null) {
+			root = new BinaryNode<E>(x);
 			size++;
 			return true;
 		} else {
-			if(x.compareTo(binaryNode.element) < 0) {
-				addEl(x, binaryNode.left);
+			if(binaryNode.element.equals(x)) {
+				return false;
 			}
-			addEl(x, binaryNode.right);
-			return false;
+			// Om elementet är större än elementet man är på
+			if(x.compareTo(binaryNode.element) > 0) {
+				// Om det finns ett element till höger om elementet man är på
+				if(binaryNode.right != null) { 
+					return addEl(x, binaryNode.right); 
+				}
+				// Om det inte finns något element till höger om elementet man är på
+				else {
+					binaryNode.right = new BinaryNode<E>(x);
+					size++;
+					return true;
+				}
+			} else {
+				if(binaryNode.left != null) {
+					return addEl(x, binaryNode.left);
+				} else {
+					binaryNode.left = new BinaryNode<E>(x);
+					size++;
+					return true;
+				}
+			}
 		}
 	}
 	
@@ -41,14 +59,17 @@ public class BinarySearchTree<E extends Comparable<? super E>> {
 	 * @return the height of the tree
 	 */
 	public int height() {
+		System.out.println("hej");
 		return heightCal(root);
 	}
 	
 	private int heightCal(BinaryNode<E> binaryNode) {
 		if(binaryNode == null) {
 			return 0;
+		} else {
+			System.out.println("hej");
+			return 1 + Math.max(heightCal(binaryNode.left), heightCal(binaryNode.right));
 		}
-		return 1 + Math.max(heightCal(binaryNode.left), heightCal(binaryNode.right));
 	}
 	
 	/**
