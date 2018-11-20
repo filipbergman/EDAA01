@@ -2,6 +2,14 @@
 public class Board {
 	private int board[][] = new int[9][9];
 
+	/**
+	 * Inserts the specified number in the specified slot (row, col) on the board if
+	 * the slot is empty and inside the board and the number is in the right range.
+	 * 
+	 * @param row, col, number
+	 *            elements to be inserted
+	 * @return true if the the number was inserted
+	 */
 	public boolean set(int row, int col, int number) {
 		if (row < 9 && row >= 0 && col < 9 && col >= 0 && number < 10 && number > 0 && board[row][col] == 0) {
 			board[row][col] = number;
@@ -10,6 +18,13 @@ public class Board {
 		return false;
 	}
 
+	/**
+	 * Returns the number on the slot(row, col) if the place is not empty.
+	 * 
+	 * @param row, col
+	 *            elements to be inserted
+	 * @return the number on the slot(row, col) if the place is not empty.
+	 */
 	public int getNum(int row, int col) {
 		if (row < 9 && row >= 0 && col < 9 && col >= 0) {
 			return board[row][col];
@@ -17,16 +32,34 @@ public class Board {
 		return -1;
 	}
 
+	/**
+	 * Removes the number on the slot(row,col) and returns the number that was removed.
+	 * 
+	 * @param row, col
+	 *            elements to be inserted
+	 * @return the number that was removed
+	 */
 	public int remove(int row, int col) {
 		int temp = board[row][col];
 		board[row][col] = 0;
 		return temp;
 	}
 
+	/**
+	 * Removes all the slots on the board.
+	 * 
+	 * @param row, col
+	 *            elements to be inserted
+	 */
 	public void clear(int row, int col) {
 		board = new int[9][9];
 	}
 
+	/**
+	 * Tries to solve the current board.
+	 * 
+	 * @return true if the board was solved
+	 */
 	public boolean solve() {
 		return solve(0, 0);
 	}
@@ -82,15 +115,15 @@ public class Board {
 		return true;
 	}
 	
-	@Override
-	public String toString() {
-		String string = "";
-		for(int row = 0; row < 9; row++) {
-			for(int col = 0; col < 9; col++) {
-				string += getNum(row,col) + " ";
-			}
-			string += "\n";
-		}
-		return string;
-	}
+//	@Override
+//	public String toString() {
+//		String string = "";
+//		for(int row = 0; row < 9; row++) {
+//			for(int col = 0; col < 9; col++) {
+//				string += getNum(row,col) + " ";
+//			}
+//			string += "\n";
+//		}
+//		return string;
+//	}
 }

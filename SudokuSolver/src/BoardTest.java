@@ -79,9 +79,7 @@ class BoardTest {
 		board.set(8, 6, 4);
 		
 		assertTrue(board.solve());
-		System.out.println(board);
-		
-		//assertEquals(9, board.getNum(0,8));
+//		System.out.println(board);
 	}
 
 }
