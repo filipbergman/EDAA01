@@ -34,6 +34,11 @@ class BinarySearchTreeTest {
 		tree.add(9);
 		assertTrue("Wrong height", tree.height() == 3);
 	}
+	
+	@Test
+	void testEmptyTreeHeight() {
+		assertEquals(0, tree.height());
+	}
 
 	@Test
 	void testSize() {
@@ -42,7 +47,12 @@ class BinarySearchTreeTest {
 		tree.add(2);
 		tree.add(9);
 		tree.add(9);
-		assertTrue("Wrong size", tree.size == 4);
+		assertTrue("Wrong size", tree.size() == 4);
+	}
+	
+	@Test
+	void testSizeEmptyTree() {
+		assertEquals(0, tree.size());
 	}
 
 }

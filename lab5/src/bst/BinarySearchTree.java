@@ -2,18 +2,18 @@ package bst;
 
 public class BinarySearchTree<E extends Comparable<? super E>> {
 	BinaryNode<E> root;
-	int size;
+	private int size;
 
 	public static void main(String args[]) {
 		BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
 		BSTVisualizer bstv = new BSTVisualizer("Träed", 500, 500);
-		tree.add(8);
 		tree.add(7);
 		tree.add(6);
 		tree.add(5);
 		tree.add(4);
 		tree.add(3);
 		tree.add(2);
+		tree.add(1);
 		tree.add(1);
 		tree.rebuild();
 		bstv.drawTree(tree);
