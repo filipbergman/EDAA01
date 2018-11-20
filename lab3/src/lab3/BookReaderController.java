@@ -55,7 +55,8 @@ public class BookReaderController extends Application {
 	}
 	
 	// Skapar knapparna och sätter in dem längst ner i gränssnittet.
-	private void createButtons(BorderPane root, ObservableList<Map.Entry<String, Integer>> wordList, ListView<Map.Entry<String, Integer>> listView) {
+	private void createButtons(BorderPane root, ObservableList<Map.Entry<String, Integer>> wordList, 
+			ListView<Map.Entry<String, Integer>> listView) {
 		// Skapar ett hbox objekt som man sedan anväder för att lägga in knappar, textfält och sökfält.
 		HBox hbox = new HBox();
 	    Button alphabeticButton = new Button("Alphabetic");

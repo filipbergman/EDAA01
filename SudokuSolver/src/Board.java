@@ -46,12 +46,11 @@ public class Board {
 	}
 
 	/**
+	 * 
 	 * Removes all the slots on the board.
 	 * 
-	 * @param row, col
-	 *            elements to be inserted
 	 */
-	public void clear(int row, int col) {
+	public void clear() {
 		board = new int[9][9];
 	}
 
