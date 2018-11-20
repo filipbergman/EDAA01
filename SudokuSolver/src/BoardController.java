@@ -20,12 +20,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-
 public class BoardController extends Application {
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+		BorderPane root = new BorderPane();
+
+		Scene scene = new Scene(root, 900, 900);
+		primaryStage.setTitle("Sudoku");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
 	}
 
+	public static void main(String[] args) {
+		Application.launch(args);
+	}
 }
