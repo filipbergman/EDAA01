@@ -6,7 +6,9 @@ public class Board {
 	 * Inserts the specified number in the specified slot (row, col) on the board if
 	 * the slot is empty and inside the board and the number is in the right range.
 	 * 
-	 * @param row, col, number
+	 * @param row for the row of the slot
+	 * @param col for the column of the slot
+	 * @param number for the number of the slot
 	 *            elements to be inserted
 	 * @return true if the the number was inserted
 	 */
@@ -21,7 +23,8 @@ public class Board {
 	/**
 	 * Returns the number on the slot(row, col) if the place is not empty.
 	 * 
-	 * @param row, col
+	 * @param row for the row of the slot
+	 * @param col for the column of the slot
 	 *            elements to be inserted
 	 * @return the number on the slot(row, col) if the place is not empty.
 	 */
@@ -35,7 +38,8 @@ public class Board {
 	/**
 	 * Removes the number on the slot(row,col) and returns the number that was removed.
 	 * 
-	 * @param row, col
+	 * @param row for the row of the slot
+	 * @param col for the column of the slot
 	 *            elements to be inserted
 	 * @return the number that was removed
 	 */
@@ -46,9 +50,7 @@ public class Board {
 	}
 
 	/**
-	 * 
 	 * Removes all the slots on the board.
-	 * 
 	 */
 	public void clear() {
 		board = new int[9][9];
