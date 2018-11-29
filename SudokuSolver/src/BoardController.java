@@ -40,11 +40,11 @@ public class BoardController extends Application {
 
 		hbox2.getChildren().addAll(solve, clear);
 		root.setBottom(hbox2);
-		ArrayList<ArrayList<OneNumberTextField>> textFields = new ArrayList<ArrayList<OneNumberTextField>>();
+		
 		
 		solve.setOnAction(event -> {
 			
-			plotBoard(textFields, board);
+//			plotBoard(textFields, board);
 			System.out.println(board);
 			Boolean solved = board.solve();
 			if (!solved) {
@@ -57,36 +57,42 @@ public class BoardController extends Application {
 		clear.setOnAction(event -> board.clear());
 
 		ArrayList<TilePane> sections = new ArrayList<TilePane>();
-		tile.setPrefColumns(3);
+		tile.setPrefColumns(9);
 		tile.setHgap(2);
 		tile.setVgap(2);
 		
 		
-		
+		int counter = 0;
 		
 		for (int i = 0; i < 9; i++) {
-			ArrayList<OneNumberTextField> tempTextFields = new ArrayList<OneNumberTextField>();
-			textFields.add(tempTextFields);
+			ArrayList<OneNumberTextField> textFields = new ArrayList<OneNumberTextField>();
+			
+			if(i > 2 && i < 6) counter = 3;
+			else counter = 0;
+			
+			
+			textFields.addAll(textFields);
 			TilePane t = new TilePane();
 			sections.add(t);
-			t.setPrefColumns(3);
+			t.setPrefColumns(9);
 
 			tile.getChildren().addAll(sections.get(i));
 			for (int k = 0; k < 9; k++) {
-				tempTextFields.add(new OneNumberTextField());
-				tempTextFields.get(k).setPrefHeight(30);
-				tempTextFields.get(k).setPrefWidth(30);
-				// Ändra färger varannan tilepane
-				if (i % 2 == 0) {
-					tempTextFields.get(k).setStyle("-fx-background-color: red;");
-				} 
+				textFields.add(new OneNumberTextField());
+				textFields.get(k).setPrefHeight(30);
+				textFields.get(k).setPrefWidth(30);
 				
-				sections.get(i).getChildren().addAll(tempTextFields.get(k));
+				// Ändra färger varannan tilepane
+				if (counter < 3) textFields.get(k).setStyle("-fx-background-color: red;");
+				counter++;
+				if(counter == 6) counter = 0;
+				
+				sections.get(i).getChildren().addAll(textFields.get(k));
 			}
 		}
 	}
 
-	private void plotBoard(ArrayList<ArrayList<OneNumberTextField>> textFields, Board board) {
+	private void plotBoard(ArrayList<OneNumberTextField> textFields, Board board) {
 //		for(int row = 0; row < 9; row++) {
 //			for(int col = 0; col < 9; col++) {
 //				int num = 0;
