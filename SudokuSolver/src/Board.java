@@ -116,15 +116,15 @@ public class Board {
 		return true;
 	}
 	
-//	@Override
-//	public String toString() {
-//		String string = "";
-//		for(int row = 0; row < 9; row++) {
-//			for(int col = 0; col < 9; col++) {
-//				string += getNum(row,col) + " ";
-//			}
-//			string += "\n";
-//		}
-//		return string;
-//	}
+	@Override
+	public String toString() {
+		String string = "";
+		for(int row = 0; row < 9; row++) {
+			for(int col = 0; col < 9; col++) {
+				string += getNum(row,col) + " ";
+			}
+			string += "\n";
+		}
+		return string;
+	}
 }

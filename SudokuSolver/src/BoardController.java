@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BackgroundFill;
@@ -38,16 +40,22 @@ public class BoardController extends Application {
 
 		hbox2.getChildren().addAll(solve, clear);
 		root.setBottom(hbox2);
+		ArrayList<ArrayList<OneNumberTextField>> textFields = new ArrayList<ArrayList<OneNumberTextField>>();
 		
 		solve.setOnAction(event -> {
-			calculateBoard();
-
-			board.solve();
+			
+			plotBoard(textFields, board);
+			System.out.println(board);
+			Boolean solved = board.solve();
+			if (!solved) {
+				Alert alert = new Alert(AlertType.ERROR, "The sudoku is unsolvable!");
+				 alert.showAndWait();
+			}
+			System.out.println(board);
 		});
 
 		clear.setOnAction(event -> board.clear());
 
-		tile.setHgap(8);
 		ArrayList<TilePane> sections = new ArrayList<TilePane>();
 		tile.setPrefColumns(3);
 		tile.setHgap(2);
@@ -55,30 +63,53 @@ public class BoardController extends Application {
 		
 		
 		
+		
 		for (int i = 0; i < 9; i++) {
-			ArrayList<OneNumberTextField> textFields = new ArrayList<OneNumberTextField>();
+			ArrayList<OneNumberTextField> tempTextFields = new ArrayList<OneNumberTextField>();
+			textFields.add(tempTextFields);
 			TilePane t = new TilePane();
 			sections.add(t);
 			t.setPrefColumns(3);
 
 			tile.getChildren().addAll(sections.get(i));
 			for (int k = 0; k < 9; k++) {
-				textFields.add(new OneNumberTextField());
-				textFields.get(k).setPrefHeight(30);
-				textFields.get(k).setPrefWidth(30);
+				tempTextFields.add(new OneNumberTextField());
+				tempTextFields.get(k).setPrefHeight(30);
+				tempTextFields.get(k).setPrefWidth(30);
 				// Ändra färger varannan tilepane
 				if (i % 2 == 0) {
-					textFields.get(k).setStyle("-fx-background-color: red;");
-				} else 
-					textFields.get(k).setStyle("-fx-background-color: blue;");
+					tempTextFields.get(k).setStyle("-fx-background-color: red;");
+				} 
 				
-				sections.get(i).getChildren().addAll(textFields.get(k));
+				sections.get(i).getChildren().addAll(tempTextFields.get(k));
 			}
 		}
 	}
 
-	private void calculateBoard() {
-
+	private void plotBoard(ArrayList<ArrayList<OneNumberTextField>> textFields, Board board) {
+//		for(int row = 0; row < 9; row++) {
+//			for(int col = 0; col < 9; col++) {
+//				int num = 0;
+//				
+//				int tempRow;
+//				if (row < 3) tempRow = 0;
+//				else if (row < 6) tempRow = 1;
+//				else tempRow = 2;
+//				
+//				int tempCol;
+//				if (col < 3) tempCol = 0;
+//				else if (col < 6) tempCol = 1;
+//				else tempCol = 2;
+//				
+//				String temp = textFields.get(tempRow).get(tempCol).getCharacters().toString();
+//				
+//				if (!temp.equals("")) {
+//					num = Integer.parseInt(temp);
+//				}
+//				
+//				board.set(row, col, num);
+//			}
+//		}
 	}
 
 	public static void main(String[] args) {
