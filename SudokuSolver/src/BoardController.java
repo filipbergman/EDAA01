@@ -14,8 +14,7 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 public class BoardController extends Application {
-	
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		TilePane tile = new TilePane();
@@ -25,8 +24,7 @@ public class BoardController extends Application {
 		root.setCenter(hbox1);
 		hbox1.setAlignment(Pos.CENTER);
 		hbox1.getChildren().addAll(tile);
-		
-		
+
 		Scene scene = new Scene(root, 400, 350);
 		primaryStage.setTitle("Sudoku");
 		primaryStage.setScene(scene);
@@ -40,82 +38,113 @@ public class BoardController extends Application {
 
 		hbox2.getChildren().addAll(solve, clear);
 		root.setBottom(hbox2);
-		
-		
+		ArrayList<ArrayList<OneNumberTextField>> textFields = new ArrayList<ArrayList<OneNumberTextField>>();
+
 		solve.setOnAction(event -> {
-			
-//			plotBoard(textFields, board);
+			// Clean board object old numbers did not disapear before
+			board.clear();
+
+			getVisibleBoard(textFields, board);
 			System.out.println(board);
 			Boolean solved = board.solve();
 			if (!solved) {
 				Alert alert = new Alert(AlertType.ERROR, "The sudoku is unsolvable!");
-				 alert.showAndWait();
+				alert.showAndWait();
 			}
+			plotBoard(textFields, board);
+
 			System.out.println(board);
 		});
 
-		clear.setOnAction(event -> board.clear());
+		clear.setOnAction(event -> {
+			board.clear();
+			clearVisibleBoard(textFields);
+		});
 
 		ArrayList<TilePane> sections = new ArrayList<TilePane>();
-		tile.setPrefColumns(9);
+		tile.setPrefColumns(3);
 		tile.setHgap(2);
 		tile.setVgap(2);
-		
-		
-		int counter = 0;
-		
+
 		for (int i = 0; i < 9; i++) {
-			ArrayList<OneNumberTextField> textFields = new ArrayList<OneNumberTextField>();
-			
-			if(i > 2 && i < 6) counter = 3;
-			else counter = 0;
-			
-			
-			textFields.addAll(textFields);
+			ArrayList<OneNumberTextField> tempTextFields = new ArrayList<OneNumberTextField>();
+			textFields.add(tempTextFields);
 			TilePane t = new TilePane();
 			sections.add(t);
-			t.setPrefColumns(9);
+			t.setPrefColumns(3);
 
 			tile.getChildren().addAll(sections.get(i));
 			for (int k = 0; k < 9; k++) {
-				textFields.add(new OneNumberTextField());
-				textFields.get(k).setPrefHeight(30);
-				textFields.get(k).setPrefWidth(30);
-				
+				tempTextFields.add(new OneNumberTextField());
+				tempTextFields.get(k).setPrefHeight(30);
+				tempTextFields.get(k).setPrefWidth(30);
 				// Ändra färger varannan tilepane
-				if (counter < 3) textFields.get(k).setStyle("-fx-background-color: red;");
-				counter++;
-				if(counter == 6) counter = 0;
-				
-				sections.get(i).getChildren().addAll(textFields.get(k));
+				if (i % 2 == 0) {
+					tempTextFields.get(k).setStyle("-fx-background-color: red;");
+				}
+
+				sections.get(i).getChildren().addAll(tempTextFields.get(k));
 			}
 		}
 	}
 
-	private void plotBoard(ArrayList<OneNumberTextField> textFields, Board board) {
-//		for(int row = 0; row < 9; row++) {
-//			for(int col = 0; col < 9; col++) {
-//				int num = 0;
-//				
-//				int tempRow;
-//				if (row < 3) tempRow = 0;
-//				else if (row < 6) tempRow = 1;
-//				else tempRow = 2;
-//				
-//				int tempCol;
-//				if (col < 3) tempCol = 0;
-//				else if (col < 6) tempCol = 1;
-//				else tempCol = 2;
-//				
-//				String temp = textFields.get(tempRow).get(tempCol).getCharacters().toString();
-//				
-//				if (!temp.equals("")) {
-//					num = Integer.parseInt(temp);
-//				}
-//				
-//				board.set(row, col, num);
-//			}
-//		}
+	private void getVisibleBoard(ArrayList<ArrayList<OneNumberTextField>> textFields, Board board) {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				int num = 0;
+
+				// row conversion start
+				int section = (col / 3) + 3* (row / 3);
+				// row conversion end
+
+				// Col conversion start
+				int place = row % 3 * 3 + col % 3;
+				// Col conversion end
+
+				String temp = textFields.get(section).get(place).getCharacters().toString();
+
+				if (!temp.equals("")) {
+					num = Integer.parseInt(temp);
+				}
+
+				board.set(row, col, num);
+			}
+		}
+	}
+
+	private void plotBoard(ArrayList<ArrayList<OneNumberTextField>> textFields, Board board) {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				int num = board.getNum(row, col);
+
+				int tempCol;
+				int tempRow;
+
+				// row conversion start
+				tempRow = (col / 3) + 3 * (row / 3);
+				// row conversion end
+
+				// Col conversion start
+				tempCol = row % 3 * 3 + col % 3;
+				// Col conversion end
+
+				String tempString;
+				if (num == 0)
+					tempString = "";
+				else
+					tempString = Integer.toString(num);
+				textFields.get(tempRow).get(tempCol).setText(tempString);
+
+			}
+		}
+	}
+
+	private void clearVisibleBoard(ArrayList<ArrayList<OneNumberTextField>> textFields) {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				textFields.get(row).get(col).setText("");
+			}
+		}
 	}
 
 	public static void main(String[] args) {

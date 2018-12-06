@@ -1,4 +1,3 @@
-
 public class Board {
 	private int board[][] = new int[9][9];
 
@@ -62,6 +61,12 @@ public class Board {
 	 * @return true if the board was solved
 	 */
 	public boolean solve() {
+		for (int r = 0; r < 9; r++) {
+			for (int k = 0; k < 9; k++) {
+				// Testar alla rutor innan den börjar fylla i dem.  
+				if (this.getNum(r, k) != 0 && !ruleCheck(r, k, this.getNum(r, k))) return false;
+			}
+		}
 		return solve(0, 0);
 	}
 
