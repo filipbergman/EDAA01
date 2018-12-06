@@ -35,7 +35,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	private Entry<K, V> find(int index, K key) {
 		Entry<K, V> temp = table[index];
 		while (temp != null) {
-			if (temp.key == key) {
+			if (temp.key.equals(key)) {
 				return temp;
 			}
 			temp = temp.next;
@@ -62,8 +62,8 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		key = (K) key;
 		for(int i = 0; i < table.length; i++) {
 			Entry<K, V> temp = table[i];
-			while(table[i] != null) {
-				if(key == temp.key) {
+			while(table[i] != null && temp != null) {
+				if(key.equals(temp.key)) {
 					return temp.value;
 				}
 				temp = temp.next;
@@ -92,9 +92,9 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		if (table[index] == null) {
 			table[index] = entry;
 			size++;
-//			if (size() > loadFactor) {
-//				rehash();
-//			}
+			if (size() > table.length*loadFactor) {
+				rehash();
+			}
 			return null;
 		} else {
 			while (true) {
@@ -107,17 +107,18 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 					size++;
 					return null;
 				}
-//				if (size() > loadFactor) {
-//					rehash();
-//				}
+				if (size() > table.length*loadFactor) {
+					rehash();
+				}
 				temp = temp.next;
 			}
 		}
 	}
 
 	private void rehash() {
+		size = 0;
 		capacity = capacity * 2;
-		Entry<K, V>[] tempList = (Entry<K, V>[]) new Entry[size()];
+		Entry<K, V>[] tempList = (Entry<K, V>[]) new Entry[capacity];
 		for (int i = 0; i < table.length; i++) {
 			while (table[i] != null) {
 				tempList[i] = table[i];
@@ -126,7 +127,13 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		}
 		table = (Entry<K, V>[]) new Entry[capacity];
 		for (int i = 0; i < tempList.length; i++) {
-			put(tempList[i].key, tempList[i].value);
+			Entry<K, V> temp = tempList[i];
+			while(temp != null) {
+				if(tempList[i] != null) {
+					put(temp.getKey(), temp.getValue());
+				}
+				temp = temp.next;
+			}
 		}
 	}
 
