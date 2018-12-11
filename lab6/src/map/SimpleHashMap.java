@@ -6,12 +6,13 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	private Entry<K, V>[] table;
 	private int capacity;
 	private double loadFactor;
+	private int size;
 
 	public static void main(String args[]) {
 		SimpleHashMap<Integer, Integer> shm = new SimpleHashMap<Integer, Integer>(10);
 
 		java.util.Random random = new java.util.Random(123456);
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 10; i++) {
 			int r = random.nextInt(1000 + 1 + 1000) - 1000;
 			shm.put(r, r);
 		}
@@ -31,6 +32,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		loadFactor = 0.75;
 		capacity = 16;
 		table = (Entry<K, V>[]) new Entry[capacity];
+		size = 0; 
 	}
 
 	/**
@@ -41,6 +43,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 		loadFactor = 0.75;
 		this.capacity = capacity;
 		table = (Entry<K, V>[]) new Entry[this.capacity];
+		size = 0;
 	}
 
 	private int index(K key) {
@@ -74,45 +77,47 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-		for (int i = 0; i < table.length; i++) {
-			if (find(i, (K) key) != null) {
-				return find(i, (K) key).value;
-			}
-		}
-		return null;
+		Entry<K, V> found = find(index((K) key), (K) key);
+		if (found == null)
+			return null;
+		else
+			return found.value;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		for (int i = 0; i < table.length; i++) {
-			if (table[i] != null) {
-				return false;
-			}
-		}
-		return true;
+		return size == 0;
 	}
 
 	@Override
 	public V put(K key, V newVal) {
-		if (size() > table.length * loadFactor) {
-			rehash();
-		}
 		Entry<K, V> entry = new Entry<K, V>(key, newVal);
 		int index = index(key);
 		Entry<K, V> temp = table[index];
 
 		// Behövs bara kollas en gång, därför ligger den utanför loopen.
-		if (table[index] == null) {
+		if (temp == null) {
 			table[index] = entry;
+			size++;
+			if (size() > table.length * loadFactor) {
+				rehash();
+			}
 			return null;
 		} else {
-			while (true) {
+			while(true) {
 				if (temp.key.equals(key)) {
 					V tempVal = temp.value;
-					temp.value = entry.value;
+					temp.value = newVal;
+					if (size() > table.length * loadFactor) {
+						rehash();
+					}
 					return tempVal;
 				} else if (temp.next == null) {
 					temp.next = entry;
+					size++;
+					if (size() > table.length * loadFactor) {
+						rehash();
+					}
 					return null;
 				}
 				temp = temp.next;
@@ -121,51 +126,54 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 	}
 
 	private void rehash() {
+		size = 0;
 		// Skapar först en kopia av table
 		Entry<K, V>[] tempList = table;
 		capacity = capacity * 2;
+		Entry<K, V> temp;
 
 		// Gör sedan en ny table som är dubbelt så stor.
 		table = (Entry<K, V>[]) new Entry[capacity];
-		
+
 		// Lägger sedan in elementen från tempList till den nya table genom put.
 		for (int i = 0; i < tempList.length; i++) {
-			Entry<K, V> temp = tempList[i];
-			while (temp != null) {
-				if (tempList[i] != null) {
+			if (tempList[i] != null) {
+				temp = tempList[i];
+				while (temp != null) {
 					put(temp.getKey(), temp.getValue());
+					temp = temp.next;
 				}
-				temp = temp.next;
 			}
 		}
 	}
 
 	@Override
 	public V remove(Object key) {
-		for (int i = 0; i < table.length; i++) {
-			Entry<K, V> temp = table[i];
-			Entry<K, V> prevTemp = null;
-			Entry<K, V> found = find(i, (K) key);
+		int index = index((K) key);
+		Entry<K, V> temp = table[index];
+		Entry<K, V> prevTemp = null;
+		Entry<K, V> found = find(index, (K) key);
 
-			// Om listan inte är tom && listan innehåller det sökta elementet
-			if (found != null) {
-				V tempVal = found.value; 
-				// Det är det första elementet i listan
-				if (temp.next == null) {
-					table[i] = null;
-					return tempVal;
-				}
-				// Elementet är senare i listan
-				else {
-					while(true) {
-						prevTemp = temp;
-						temp = temp.next;
-						// Det förra elementets next blir detta elementets next (kan vara null).
-						if(temp.key.equals(key)) {
-							prevTemp.next = temp.next;
-							table[i].next = null;
-							return tempVal;
-						}
+		// Om listan inte är tom && listan innehåller det sökta elementet
+		if (found != null) {
+			V tempVal = found.value;
+			// Det är ett elementet i listan
+			if (temp.next == null) {
+				table[index] = null;
+				size--;
+				return tempVal;
+			}
+			// Elementet är senare i listan
+			else {
+				while (true) {
+					prevTemp = temp;
+					temp = temp.next;
+					// Det förra elementets next blir detta elementets next (kan vara null).
+					if (temp.key.equals(key)) {
+						prevTemp.next = temp.next;
+						table[index].next = null;
+						size--;
+						return tempVal;
 					}
 				}
 			}
@@ -175,15 +183,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 
 	@Override
 	public int size() {
-		int s = 0;
-		for (int i = 0; i < table.length; i++) {
-			Entry<K, V> temp = table[i];
-			while (temp != null) {
-				s++;
-				temp = temp.next;
-			}
-		}
-		return s;
+		return size;
 	}
 
 	public static class Entry<K, V> implements Map.Entry<K, V> {

@@ -168,13 +168,11 @@ public class TestSimpleHashMap {
 	public final void testManyPutAndGet() {
 		java.util.Random random = new java.util.Random(123456);
 		HashSet<Integer> randNbrs = new HashSet<Integer>();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			int r = random.nextInt(10000);			
 			m16.put(r, r);
 			randNbrs.add(r);
 		}
-		System.out.println(m16.show());
-		System.out.println(m16.size()); // Dubbletter
 		for (int i : randNbrs) {			
 			assertEquals("key not found in map:" + i, new Integer(i), m16.get(i));
 		}
