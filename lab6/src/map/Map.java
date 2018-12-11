@@ -10,4 +10,5 @@ public interface Map<K, V> {
     V put(K arg0, V arg1);
     V remove(Object arg0);
     int size(); 
+    String show();
 }
