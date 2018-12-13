@@ -165,7 +165,7 @@ public class SimpleHashMap<K, V> implements Map<K, V> {
 			}
 			// Elementet är senare i listan
 			else {
-				while (true) {
+				while(true) {
 					prevTemp = temp;
 					temp = temp.next;
 					// Det förra elementets next blir detta elementets next (kan vara null).
