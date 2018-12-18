@@ -92,7 +92,6 @@ public class Board {
 				} else if (numbSet) remove(row, col);
 			}
 		}
-
 		return false;
 	}
 

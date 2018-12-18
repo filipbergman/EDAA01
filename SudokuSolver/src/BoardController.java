@@ -19,8 +19,8 @@ public class BoardController extends Application {
 		Board board = new Board();
 		BorderPane root = new BorderPane();
 		Scene scene = new Scene(root, 400, 350);
-		HBox hbox1 = new HBox();
-		HBox hbox2 = new HBox();
+		HBox hbox1 = new HBox(); // För tilen som ska innehålla brädet
+		HBox hbox2 = new HBox(); // För knapparna
 		
 		Button solve = new Button("Solve");
 		Button clear = new Button("Clear");
